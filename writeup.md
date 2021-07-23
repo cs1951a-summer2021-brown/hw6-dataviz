@@ -10,14 +10,13 @@
     - **Sample Question**: I want to analyze the relationship between stonks and reverse stonks.
     - **Graph & Analysis**: *Sample response - delete this*
         Here is my first graph to answer my question:
-        ![stonks and reverse stonks graph and this is my alt text](graphs/sample_graph.png)
+        ![two separate graphs of stonks and reverse stonks (this is my alt text)](graphs/sample_graph.png)
 
         In this graph, we see that stonks and reverse stonks can happen at the same time. Indeed, it can even
         happen in the same graph!
-        ![stonks in the same graph as reverse and this is my alt text](graphs/sample_graph1.png)
+        ![stonks in the same graph as reverse stonks (this is my alt text)](graphs/sample_graph1.png)
 
-        It is really interesting how both stonks and reverse stonks lines have their ups and downs kinda moments,
-        but they are all headed where they are headed (up, or down). Here, we see that there might be a direct negative relationship between the *stonks* line and the *reverse stonks* line - they are different by a factor of `-1`.
+        It is really interesting how both stonks and reverse stonks lines have their ups and downs kinds of moments. Here, we see that there might be a direct negative relationship between the *stonks* line and the *reverse stonks* line - they are different by a factor of `-1`. Therefore, we can conclude that stonks can happen in both directions.
 
 1. **Aspect One**:
     - **Question**: *Your question of choice here*
