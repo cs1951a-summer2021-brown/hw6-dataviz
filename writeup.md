@@ -55,7 +55,7 @@
 
 ------------------------------------------------------------------------------------------------------------
 
-### Stage N: Extra credit plots (maximum +15 points, +5 points each aspect)
+### Stage N: Extra credit plots (maximum +15 points, +5 points max for each aspect)
 *Feel free to delete this section if you are planning to not implement extra credit*
 
 ------------------------------------------------------------------------------------------------------------
