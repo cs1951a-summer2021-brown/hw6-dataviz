@@ -7,6 +7,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.dummy import DummyClassifier
 from sklearn import svm
+import numpy as np
 
 from sklearn import tree
 
@@ -33,6 +34,8 @@ def get_banknote_df():
 TEST_SIZE = 0.2 # TODO: Feel free to modify this!
 KNN_NUM_NEIGHBORS = 5 # TODO: Feel free to modify this!
 RANDOM_SEED = 0
+TRAFFIC_STOPS_NONNUMERICAL_COLS = ["county_name", "driver_gender", "driver_race", "violation", "search_conducted",\
+                                    "stop_outcome", "is_arrested", "drugs_related_stop"]
 
 
 def get_trained_model(dataset_name, model_name, target_name=None, feature_names=None):
@@ -99,7 +102,16 @@ def get_trained_model(dataset_name, model_name, target_name=None, feature_names=
 
     train_df, test_df = train_test_split(data, test_size=TEST_SIZE)
 
-    model.fit(ohe.fit_transform(train_df[feature_names]), train_df[target_name])
+    if dataset_name == "ri_traffic_stops":
+        X = ohe.fit_transform(train_df[[e for e in feature_names if e in TRAFFIC_STOPS_NONNUMERICAL_COLS]]).toarray()
+        X_PRIME = train_df[[e for e in feature_names if e not in TRAFFIC_STOPS_NONNUMERICAL_COLS]].to_numpy()
+        train_data = np.concatenate((X, X_PRIME), axis=1)
+
+    if dataset_name == "banknote_authentication":
+        train_data = train_df[feature_names].copy()
+
+
+    model.fit(train_data, train_df[target_name])
     return model, ohe, train_df, test_df
     
 
@@ -139,14 +151,23 @@ def get_model_accuracy(model, df, one_hot_encoder, dataset_name=None, target_nam
         feature_names = [e for e in df.columns if e != target_name]
 
     # and then assert that target_name and each of feature_names in df
+    ohe_bool = False
     assert target_name in df.columns, f"Column not found: {target_name}"
     for lbl in feature_names:
         assert lbl in df.columns, f"Column not found: {lbl}"
+        # alright, and check if we need to slap one hot encoding on top of this or nah
+        if lbl in TRAFFIC_STOPS_NONNUMERICAL_COLS:
+            ohe_bool = True
 
 
     ##### Alright. Now onto the meat of the function! #####
     # encode the features
-    encoded = one_hot_encoder.transform(df[feature_names])
+    if not ohe_bool:
+        encoded = df[feature_names]
+    else:
+        X = one_hot_encoder.transform(df[[e for e in feature_names if e in TRAFFIC_STOPS_NONNUMERICAL_COLS]]).toarray()
+        X_PRIME = df[[e for e in feature_names if e not in TRAFFIC_STOPS_NONNUMERICAL_COLS]].to_numpy()
+        encoded = np.concatenate((X, X_PRIME), axis=1)
 
     # and then use the model to predict
     y_pred = model.predict(encoded)
